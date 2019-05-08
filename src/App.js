@@ -9,7 +9,7 @@ class App extends React.Component {
       <Router>
         <div className="App">
           <Route exact path="/" component={Home} />
-          <Route path="/pokemon/:id" component={Details} />
+          <Route path="/pokemon/:name" component={Details} />
         </div>
       </Router>
     );

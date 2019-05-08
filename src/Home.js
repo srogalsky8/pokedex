@@ -39,7 +39,7 @@ class Home extends React.Component {
       let id = idx+1;
       return (
         <div className="card-container text-center" key={id}>
-          <Link className="card" to={"/pokemon/" + id}>
+          <Link className="card" to={"/pokemon/" + element.name}>
             <img className="card-img" alt={element.name} src={"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + id + ".png"} />
           </Link>
           <div className="card-label">{element.name}</div>
