@@ -8,7 +8,10 @@ let fetchAllPokemon = () => {
   return fetch('https://pokeapi.co/api/v2/pokemon/?limit=151').then(response => {
     return response.json()
   }).then(json => {
-    return json.results
+    return json.results.map((value, idx) => {
+      value.id = idx+1;
+      return value
+    })
   })
 }
 
@@ -35,12 +38,11 @@ class Home extends React.Component {
     return filteredPokemon.slice(0, this.state.numCardsLoaded);
   }
   getCards = () => {
-    return this.getFilteredPokemon().map((element, idx) => {
-      let id = idx+1;
+    return this.getFilteredPokemon().map((element) => {
       return (
-        <div className="card-container text-center" key={id}>
+        <div className="card-container text-center" key={element.id}>
           <Link className="card" to={"/pokemon/" + element.name}>
-            <img className="card-img" alt={element.name} src={"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + id + ".png"} />
+            <img className="card-img" alt={element.name} src={"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + element.id + ".png"} />
           </Link>
           <div className="card-label">{element.name}</div>
         </div>
