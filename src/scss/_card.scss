@@ -1,0 +1,25 @@
+.card-deck {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin: -15px;
+}
+  
+.card-container {
+  margin: 15px;
+}
+  
+.card {
+  padding: 15px;
+  width: 150px;
+  border: 1px solid;
+  cursor: pointer;
+}
+
+.card-img {
+  width: 100%;
+}
+  
+.card-label {
+  text-transform: capitalize;
+}

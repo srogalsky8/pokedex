@@ -1,5 +1,6 @@
 import React from 'react';
 
+// TODO: lazy load certain amount, load more on scroll
 let fetchAllPokemon = () => {
   return fetch('https://pokeapi.co/api/v2/pokemon/?limit=151').then(response => {
     return response.json()
@@ -20,13 +21,22 @@ class Home extends React.Component {
   }
   getCards = () => {
     return this.state.pokemon.map((element, idx) => {
-      return <div key={idx}>{element.name}</div>
+      return (
+        <div className="card-container text-center">
+          <div className="card" key={idx}>
+            <img className="card-img" src={"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + (idx+1) + ".png"} />
+          </div>
+          <div className="card-label">{element.name}</div>
+        </div>
+      );
     })
   }
   render() {
     return (
-      <div className="Home">
-        {this.getCards()}
+      <div className="Home container">
+        <div className="card-deck">
+          {this.getCards()}
+        </div>
       </div>
     );
   }
