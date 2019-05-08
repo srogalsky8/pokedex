@@ -1,4 +1,5 @@
 import React from 'react';
+import Map from './Map';
 
 // retrieves pokemon from the API
 let fetchPokemon = (name) => {
@@ -13,35 +14,6 @@ let getPokemon = (name) => {
   return fetchPokemon(name);
 }
 
-let fetchLocations = (id) => {
-  return fetch('https://api.craft-demo.net/pokemon/' + id, {
-    headers: {
-      'x-api-key': 'HHko9Fuxf293b3w56zAJ89s3IcO9D5enaEPIg86l'
-    }
-  }).then(response => {
-    console.log(response.text());
-    return response.json();
-  })
-//   return fetch(url, {
-//     method: "POST", // *GET, POST, PUT, DELETE, etc.
-//     mode: "cors", // no-cors, cors, *same-origin
-//     cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-//     credentials: "same-origin", // include, *same-origin, omit
-//     headers: {
-//         "Content-Type": "application/json",
-//         // "Content-Type": "application/x-www-form-urlencoded",
-//     },
-//     redirect: "follow", // manual, *follow, error
-//     referrer: "no-referrer", // no-referrer, *client
-//     body: JSON.stringify(data), // body data type must match "Content-Type" header
-// })
-}
-
-let getLocations = (id) => {
-  // if not store.get(id)
-  return fetchLocations(id);
-}
-
 class Details extends React.Component {
   constructor(props) {
     super(props);
@@ -51,11 +23,6 @@ class Details extends React.Component {
     }
     getPokemon(props.match.params.name).then((pokemon) => {
       this.setState({pokemon: pokemon})
-      return pokemon;
-    }).then(pokemon => {
-      return getLocations(pokemon.id);
-    }).then(locations => {
-      this.setState({locations: locations})
     })
   }
   getInfoPane = () => {
@@ -92,7 +59,7 @@ class Details extends React.Component {
   }
   getContentPane = () => {
     if(this.state.pokemon) {
-      return;
+      return <Map pokemon={this.state.pokemon}></Map>;
     }
   }
   render() {
@@ -103,7 +70,7 @@ class Details extends React.Component {
             {this.getInfoPane()}
           </div>
           <div className="content-pane">
-            Content
+            {this.getContentPane()}
           </div>
         </div>
       </div>

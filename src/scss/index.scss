@@ -6,7 +6,9 @@ ul {
   padding-inline-start: 0;
   list-style-type: none;
 }
-
+#map {
+  width:100%;
+}
 .list-search {
   margin: 1.5em;
 }
@@ -14,7 +16,7 @@ ul {
   display: flex;
 }
 .info-pane {
-  flex: 1;
+  flex: 2;
   padding-right: 15px;
 }
 .info-img-container {
@@ -28,7 +30,7 @@ ul {
   width: 100%;
 }
 .content-pane {
-  flex: 2;
+  flex: 5;
   padding-left: 15px;
 }
 .label {
