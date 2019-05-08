@@ -1,6 +1,9 @@
 import React from 'react';
+import InfiniteScroll from 'react-infinite-scroller'
+import { Link } from 'react-router-dom'
 
-// TODO: lazy load certain amount, load more on scroll
+// TODO: lazy load certain amount, and fetch more on infinite scroll trigger
+// the more scalable solution
 let fetchAllPokemon = () => {
   return fetch('https://pokeapi.co/api/v2/pokemon/?limit=151').then(response => {
     return response.json()
@@ -15,7 +18,8 @@ class Home extends React.Component {
     this.state = {
       pokemon: [],
       search: '',
-      showBagOnly: false
+      showBagOnly: false,
+      numCardsLoaded: 20
     };
     fetchAllPokemon().then(list => {
       this.setState({pokemon: list})
@@ -28,15 +32,16 @@ class Home extends React.Component {
         return element.name.includes(this.state.search);
       })
     }
-    return filteredPokemon;
+    return filteredPokemon.slice(0, this.state.numCardsLoaded);
   }
   getCards = () => {
     return this.getFilteredPokemon().map((element, idx) => {
+      let id = idx+1;
       return (
-        <div className="card-container text-center">
-          <div className="card" key={idx}>
-            <img className="card-img" src={"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + (idx+1) + ".png"} />
-          </div>
+        <div className="card-container text-center" key={id}>
+          <Link className="card" to={"/pokemon/" + id}>
+            <img className="card-img" alt={element.name} src={"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + id + ".png"} />
+          </Link>
           <div className="card-label">{element.name}</div>
         </div>
       );
@@ -44,11 +49,17 @@ class Home extends React.Component {
   }
   doSearch = (event) => {
     // TODO: add typeahead
-    this.setState({search: event.target.value});
+    this.setState({
+      search: event.target.value,
+      numCardsLoaded: 20
+    });
+  }
+  loadMore = () => {
+    this.setState({numCardsLoaded: this.state.numCardsLoaded + 20})
   }
   render() {
     return (
-      <div className="Home container">
+      <div className="Home container" style={{marginTop: "10em"}}>
         <div className="list-toggle text-center">
           <div className="btn-group">
             <button className={"btn " + this.state.showBagOnly ? "" : "active"} onClick={() => this.setState({showBagOnly: false})}>All</button>
@@ -58,9 +69,16 @@ class Home extends React.Component {
         <div className="list-search text-center">
           <input type="text" value={this.state.search} onChange={this.doSearch} placeholder={"Search"} />
         </div>
+        <InfiniteScroll
+          pageStart={0}
+          loadMore={this.loadMore}
+          hasMore={this.state.numCardsLoaded < this.state.pokemon.length}
+          loader={<div className="loader" key={0}>Loading ...</div>}
+        >
         <div className="card-deck">
           {this.getCards()}
         </div>
+        </InfiniteScroll>
       </div>
     );
   }
