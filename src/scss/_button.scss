@@ -1,0 +1,7 @@
+.btn {
+    cursor:pointer;
+    background-color: red;
+    &.active {
+        background-color:#ddd;
+    }
+}

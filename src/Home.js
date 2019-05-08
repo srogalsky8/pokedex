@@ -13,14 +13,25 @@ class Home extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      pokemon: []
+      pokemon: [],
+      search: '',
+      showBagOnly: false
     };
     fetchAllPokemon().then(list => {
       this.setState({pokemon: list})
     });
   }
+  getFilteredPokemon = () => {
+    let filteredPokemon = this.state.pokemon
+    if(this.state.search) {
+      filteredPokemon = filteredPokemon.filter(element => {
+        return element.name.includes(this.state.search);
+      })
+    }
+    return filteredPokemon;
+  }
   getCards = () => {
-    return this.state.pokemon.map((element, idx) => {
+    return this.getFilteredPokemon().map((element, idx) => {
       return (
         <div className="card-container text-center">
           <div className="card" key={idx}>
@@ -31,9 +42,22 @@ class Home extends React.Component {
       );
     })
   }
+  doSearch = (event) => {
+    // TODO: add typeahead
+    this.setState({search: event.target.value});
+  }
   render() {
     return (
       <div className="Home container">
+        <div className="list-toggle text-center">
+          <div className="btn-group">
+            <button className={"btn " + this.state.showBagOnly ? "" : "active"} onClick={() => this.setState({showBagOnly: false})}>All</button>
+            <button className={"btn " + this.state.showBagOnly ? "active" : ""} onClick={() => this.setState({showBagOnly: true})}>Bag</button>
+          </div>
+        </div>
+        <div className="list-search text-center">
+          <input type="text" value={this.state.search} onChange={this.doSearch} placeholder={"Search"} />
+        </div>
         <div className="card-deck">
           {this.getCards()}
         </div>
