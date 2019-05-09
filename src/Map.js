@@ -80,6 +80,7 @@ class Map extends React.Component {
               bootstrapURLKeys={{ key: 'AIzaSyAEJ3rGsi9pShMUPjS9_CNALgEX5l_l3iA' }}
               defaultCenter={{lat: 32.7157, lng: -117.1611}} // default SD
               defaultZoom={11}
+              yesIWantToUseGoogleMapApiInternals={true}
               onGoogleApiLoaded={(maps, map) => this.positionMap(maps, map)}
             >
               {this.state.locations.map((element, idx) => {

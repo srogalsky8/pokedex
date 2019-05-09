@@ -1,10 +1,13 @@
 import React from 'react';
-import InfiniteScroll from 'react-infinite-scroller'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { setPokemonList } from './redux';
+
+import InfiniteScroll from 'react-infinite-scroller';
 
 // TODO: lazy load certain amount, and fetch more on infinite scroll trigger
 // the more scalable solution
-let fetchAllPokemon = () => {
+let fetchPokemonList = () => {
   return fetch('https://pokeapi.co/api/v2/pokemon/?limit=151').then(response => {
     return response.json()
   }).then(json => {
@@ -24,15 +27,24 @@ class Home extends React.Component {
       showBagOnly: false,
       numCardsLoaded: 20
     };
-    fetchAllPokemon().then(list => {
-      this.setState({pokemon: list})
-    });
+
+    // fetch pokemonList if we haven't before
+    if(props.pokemonList.length === 0) {
+      fetchPokemonList().then(list => {
+        props.setPokemonList(list);
+      });
+    }
   }
   getFilteredPokemon = () => {
-    let filteredPokemon = this.state.pokemon
+    let filteredPokemon = this.props.pokemonList
     if(this.state.search) {
       filteredPokemon = filteredPokemon.filter(element => {
         return element.name.includes(this.state.search);
+      })
+    }
+    if(this.state.showBagOnly) {
+      filteredPokemon = filteredPokemon.filter(element => {
+        return this.props.bag[element.id];
       })
     }
     return filteredPokemon.slice(0, this.state.numCardsLoaded);
@@ -64,8 +76,8 @@ class Home extends React.Component {
       <div className="Home container" style={{marginTop: "10em"}}>
         <div className="list-toggle text-center">
           <div className="btn-group">
-            <button className={"btn " + this.state.showBagOnly ? "" : "active"} onClick={() => this.setState({showBagOnly: false})}>All</button>
-            <button className={"btn " + this.state.showBagOnly ? "active" : ""} onClick={() => this.setState({showBagOnly: true})}>Bag</button>
+            <button className={"btn " + (this.state.showBagOnly ? "" : "active")} onClick={() => this.setState({showBagOnly: false, numCardsLoaded: 20})}>All</button>
+            <button className={"btn " + (this.state.showBagOnly ? "active" : "")} onClick={() => this.setState({showBagOnly: true, numCardsLoaded: 20})}>Bag</button>
           </div>
         </div>
         <div className="list-search text-center">
@@ -74,7 +86,7 @@ class Home extends React.Component {
         <InfiniteScroll
           pageStart={0}
           loadMore={this.loadMore}
-          hasMore={this.state.numCardsLoaded < this.state.pokemon.length}
+          hasMore={this.state.numCardsLoaded < this.props.pokemonList.length}
           loader={<div className="loader" key={0}>Loading ...</div>}
         >
         <div className="card-deck">
@@ -86,4 +98,15 @@ class Home extends React.Component {
   }
 }
 
-export default Home;
+let mapDispatchToProps = {
+  setPokemonList
+};
+
+let mapStateToProps = (state) => {
+  return {
+    pokemonList: state.pokemonList,
+    bag: state.bag
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

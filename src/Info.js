@@ -1,8 +1,26 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { setBag } from './redux';
+
+const setCookie = (name, value) => {
+  let cookie = name + '=' + JSON.stringify(value);
+  document.cookie = cookie;
+}
 
 class Info extends React.Component {
   constructor(props) {
     super(props);
+  }
+  toggleBag = () => {
+    let id = this.props.pokemon.id;
+    let newBag = Object.assign({}, this.props.bag);
+    if(newBag[id]) {
+      delete newBag[id];
+    } else {
+      newBag[id] = true;
+    }
+    setCookie('bag', newBag);
+    this.props.setBag(newBag);
   }
   render() {
     return (
@@ -15,7 +33,12 @@ class Info extends React.Component {
         </div>
         <p>Height: {this.props.pokemon.height}</p>
         <p>Weight: {this.props.pokemon.weight}</p>
-        <p>In bag: </p>
+        <p>In bag: <input
+            name="inBag"
+            type="checkbox"
+            checked={this.props.bag[this.props.pokemon.id]}
+            onChange={this.toggleBag} />
+        </p>
         <p>
           {this.props.pokemon.types.map(type => {
             return <span className="label">{type.type.name}</span>
@@ -36,4 +59,15 @@ class Info extends React.Component {
   }
 }
 
-export default Info;
+
+let mapStateToProps = (state) => {
+  return {
+    bag: state.bag
+  };
+}
+
+let mapDispatchToProps = {
+  setBag
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Info);

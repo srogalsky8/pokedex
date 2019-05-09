@@ -1,19 +1,38 @@
 import React from 'react';
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import { connect } from 'react-redux';
+import { setBag } from './redux';
+
 import Home from './Home'
 import Details from './Details'
-import { BrowserRouter as Router, Route } from "react-router-dom";
+
+const readCookie = (name) => {
+  let result = document.cookie.match(new RegExp(name + '=([^;]+)'));
+  result && (result = JSON.parse(result[1]));
+  return result;
+}
+
+const persistedBag = readCookie('bag');
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    props.setBag(persistedBag ? persistedBag : {});
+  }
   render() {
     return (
-      <Router>
-        <div className="App">
-          <Route exact path="/" component={Home} />
-          <Route path="/pokemon/:name" component={Details} />
-        </div>
-      </Router>
+        <Router>
+          <div className="App">
+            <Route exact path="/" component={Home} />
+            <Route path="/pokemon/:name" component={Details} />
+          </div>
+        </Router>
     );
   }
 }
 
-export default App;
+let mapDispatchToProps = {
+  setBag
+};
+
+export default connect(null, mapDispatchToProps)(App);
