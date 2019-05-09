@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { setPokemonList } from './redux';
+import { setPokemonList } from '../redux';
 
 import InfiniteScroll from 'react-infinite-scroller';
 

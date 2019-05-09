@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { setBag } from './redux';
+import { setBag } from '../redux';
 
 const setCookie = (name, value) => {
   let cookie = name + '=' + JSON.stringify(value);

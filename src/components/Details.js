@@ -1,6 +1,6 @@
 import React from 'react';
 import Map from './Map';
-import Info from './Info';
+import Info from './InfoPane';
 
 // retrieves pokemon from the API
 let fetchPokemon = (name) => {

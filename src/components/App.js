@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { connect } from 'react-redux';
-import { setBag } from './redux';
+import { setBag } from '../redux';
 
 import Home from './Home'
 import Details from './Details'
