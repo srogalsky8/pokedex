@@ -11,7 +11,7 @@ let fetchPokemon = (name) => {
 
 // retrieves pokemon from the store
 let getPokemon = (name) => {
-  // if not store.get(name)
+  // TODO: check store, and if not in store then fetch and dispatch
   return fetchPokemon(name);
 }
 

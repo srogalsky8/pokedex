@@ -24,7 +24,7 @@ const fetchLocations = (id) => {
 }
 
 const getLocations = (id) => {
-  // if not store.get(id)
+  // TODO: if not in store, then fetch and dispatch
   return fetchLocations(id).then(locations => {
     return formatLocations(locations);
   });
@@ -79,7 +79,6 @@ class Map extends React.Component {
               yesIWantToUseGoogleMapApiInternals={true}
               onGoogleApiLoaded={(maps, map) => this.positionMap(maps, map)}
             >
-            {this.getMarkers}
               {this.state.locations.map((element, idx) => {
                 return <Marker lat={element.lat} lng={element.lng} key={idx} pokemon={this.props.pokemon}></Marker>
               })}

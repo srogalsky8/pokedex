@@ -18,7 +18,7 @@ let fetchPokemonList = () => {
   })
 }
 
-class Home extends React.Component {
+export class Home extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -69,8 +69,8 @@ class Home extends React.Component {
       <div className="Home container" style={{marginTop: "10em"}}>
         <div className="list-toggle text-center">
           <div className="btn-group">
-            <button className={"btn " + (this.state.showBagOnly ? "" : "active")} onClick={() => this.setState({showBagOnly: false, numCardsLoaded: 20})}>All</button>
-            <button className={"btn " + (this.state.showBagOnly ? "active" : "")} onClick={() => this.setState({showBagOnly: true, numCardsLoaded: 20})}>Bag</button>
+            <button className={"btn all-btn " + (this.state.showBagOnly ? "" : "active")} onClick={() => this.setState({showBagOnly: false, numCardsLoaded: 20})}>All</button>
+            <button className={"btn bag-btn " + (this.state.showBagOnly ? "active" : "")} onClick={() => this.setState({showBagOnly: true, numCardsLoaded: 20})}>Bag</button>
           </div>
         </div>
         <div className="search-input-container text-center">
