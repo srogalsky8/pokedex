@@ -8,9 +8,6 @@ const setCookie = (name, value) => {
 }
 
 class Info extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   toggleBag = () => {
     let id = this.props.pokemon.id;
     let newBag = Object.assign({}, this.props.bag);
@@ -40,8 +37,8 @@ class Info extends React.Component {
             onChange={this.toggleBag} />
         </p>
         <p>
-          {this.props.pokemon.types.map(type => {
-            return <span className="label">{type.type.name}</span>
+          {this.props.pokemon.types.map((type, idx) => {
+            return <span className="label" key={idx}>{type.type.name}</span>
           })}
         </p>
         <p>
@@ -49,8 +46,8 @@ class Info extends React.Component {
         </p>
         <div>
           <ul>
-          {this.props.pokemon.stats.map(stat => {
-            return <li>{stat.stat.name}: {stat.base_stat}</li>
+          {this.props.pokemon.stats.map((stat, idx) => {
+            return <li key={idx}>{stat.stat.name}: {stat.base_stat}</li>
           })}
           </ul>
         </div>

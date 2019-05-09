@@ -1,24 +1,13 @@
+@import './variables';
 @import './font';
 @import './card';
 @import './button';
+@import './layout';
 
-ul {
-  padding-inline-start: 0;
-  list-style-type: none;
+.search-input-container {
+  margin: 1.5em 0;
 }
-#map {
-  width:100%;
-}
-.list-search {
-  margin: 1.5em;
-}
-.details-container {
-  display: flex;
-}
-.info-pane {
-  flex: 2;
-  padding-right: 15px;
-}
+
 .info-img-container {
   margin-bottom: 2em;
 }
@@ -30,10 +19,6 @@ ul {
 .info-img {
   width: 100%;
 }
-.content-pane {
-  flex: 5;
-  padding-left: 15px;
-}
 .label {
   margin-right:0.5em;
   padding: 0.25em;
@@ -42,21 +27,3 @@ ul {
   background-color: #444;
   color: #fff;
 }
-.container {
-  width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
-  margin-right: auto;
-  margin-left: auto; }
-@media (min-width: 576px) {
-    .container {
-      max-width: 540px; } }
-@media (min-width: 768px) {
-    .container {
-      max-width: 720px; } }
-@media (min-width: 992px) {
-    .container {
-      max-width: 960px; } }
-@media (min-width: 1200px) {
-    .container {
-      max-width: 1140px; } }

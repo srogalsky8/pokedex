@@ -37,11 +37,13 @@ class Home extends React.Component {
   }
   getFilteredPokemon = () => {
     let filteredPokemon = this.props.pokemonList
+    // filter by search box
     if(this.state.search) {
       filteredPokemon = filteredPokemon.filter(element => {
         return element.name.includes(this.state.search);
       })
     }
+    // show all / bag
     if(this.state.showBagOnly) {
       filteredPokemon = filteredPokemon.filter(element => {
         return this.props.bag[element.id];
@@ -50,6 +52,7 @@ class Home extends React.Component {
     return filteredPokemon.slice(0, this.state.numCardsLoaded);
   }
   getCards = () => {
+    // TODO: display when loading and when bag is empty
     return this.getFilteredPokemon().map((element) => {
       return (
         <div className="card-container text-center" key={element.id}>
@@ -61,16 +64,6 @@ class Home extends React.Component {
       );
     })
   }
-  doSearch = (event) => {
-    // TODO: add typeahead
-    this.setState({
-      search: event.target.value,
-      numCardsLoaded: 20
-    });
-  }
-  loadMore = () => {
-    this.setState({numCardsLoaded: this.state.numCardsLoaded + 20})
-  }
   render() {
     return (
       <div className="Home container" style={{marginTop: "10em"}}>
@@ -80,12 +73,15 @@ class Home extends React.Component {
             <button className={"btn " + (this.state.showBagOnly ? "active" : "")} onClick={() => this.setState({showBagOnly: true, numCardsLoaded: 20})}>Bag</button>
           </div>
         </div>
-        <div className="list-search text-center">
-          <input type="text" value={this.state.search} onChange={this.doSearch} placeholder={"Search"} />
+        <div className="search-input-container text-center">
+          <input type="text"
+            value={this.state.search}
+            onChange={(event) => this.setState({search: event.target.value, numCardsLoaded: 20})}
+            placeholder={"Search"} />
         </div>
         <InfiniteScroll
           pageStart={0}
-          loadMore={this.loadMore}
+          loadMore={() => this.setState({numCardsLoaded: this.state.numCardsLoaded + 20})}
           hasMore={this.state.numCardsLoaded < this.props.pokemonList.length}
           loader={<div className="loader" key={0}>Loading ...</div>}
         >
@@ -101,12 +97,10 @@ class Home extends React.Component {
 let mapDispatchToProps = {
   setPokemonList
 };
-
 let mapStateToProps = (state) => {
   return {
     pokemonList: state.pokemonList,
     bag: state.bag
   };
 }
-
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

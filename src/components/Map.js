@@ -1,7 +1,8 @@
 import React from 'react';
 import GoogleMapReact from 'google-map-react';
 
-let locations = [
+// dummy data
+const locations = [
   "32.734778,-117.152630",
   "32.734196,-117.139709",
   "32.833744,-117.067149",
@@ -9,39 +10,27 @@ let locations = [
   "32.907707,-116.797917"
 ];
 
-let fetchLocations = (id) => {
+const fetchLocations = (id) => {
   return Promise.resolve(locations);
-  return fetch('https://api.craft-demo.net/pokemon/' + id, {
-    headers: {
-      'x-api-key': 'HHko9Fuxf293b3w56zAJ89s3IcO9D5enaEPIg86l'
-    }
-  }).then(response => {
-    return response.json();
-  })
-//   return fetch(url, {
-//     method: "POST", // *GET, POST, PUT, DELETE, etc.
-//     mode: "cors", // no-cors, cors, *same-origin
-//     cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-//     credentials: "same-origin", // include, *same-origin, omit
-//     headers: {
-//         "Content-Type": "application/json",
-//         // "Content-Type": "application/x-www-form-urlencoded",
-//     },
-//     redirect: "follow", // manual, *follow, error
-//     referrer: "no-referrer", // no-referrer, *client
-//     body: JSON.stringify(data), // body data type must match "Content-Type" header
-// })
+  // browser does auto preflight because of custom header
+  // api isn't supporting OPTIONS
+  // return fetch('https://api.craft-demo.net/pokemon/' + id, {
+  //   headers: {
+  //     'x-api-key': 'HHko9Fuxf293b3w56zAJ89s3IcO9D5enaEPIg86l'
+  //   }
+  // }).then(response => {
+  //   return response.json();
+  // })
 }
 
-let getLocations = (id) => {
+const getLocations = (id) => {
   // if not store.get(id)
   return fetchLocations(id).then(locations => {
     return formatLocations(locations);
   });
 }
 
-// TODO: get center, zoom level
-let formatLocations = (locations) => {
+const formatLocations = (locations) => {
   return locations.map(element => {
     let coordinates = element.split(',');
     return {
@@ -49,6 +38,13 @@ let formatLocations = (locations) => {
       lng: parseFloat(coordinates[1])
     }
   })
+}
+
+// map pin component
+const Marker = ({ pokemon }) => {
+  return (
+    <img src={pokemon.sprites.front_default} width={50} alt={pokemon.name}/>
+  );
 }
 
 class Map extends React.Component {
@@ -78,15 +74,14 @@ class Map extends React.Component {
           <div style={{ height: '30em', width: '100%' }}>
             <GoogleMapReact
               bootstrapURLKeys={{ key: 'AIzaSyAEJ3rGsi9pShMUPjS9_CNALgEX5l_l3iA' }}
-              defaultCenter={{lat: 32.7157, lng: -117.1611}} // default SD
+              defaultCenter={{lat: 32.7157, lng: -117.1611}} // default San Diego
               defaultZoom={11}
               yesIWantToUseGoogleMapApiInternals={true}
               onGoogleApiLoaded={(maps, map) => this.positionMap(maps, map)}
             >
+            {this.getMarkers}
               {this.state.locations.map((element, idx) => {
-                return <div lat={element.lat} lng={element.lng} key={idx}>
-                  <img src={this.props.pokemon.sprites.front_default} width={50} alt={this.props.pokemon.name}/>
-                </div>
+                return <Marker lat={element.lat} lng={element.lng} key={idx} pokemon={this.props.pokemon}></Marker>
               })}
             </GoogleMapReact>
           </div>

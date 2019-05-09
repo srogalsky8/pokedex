@@ -29,6 +29,9 @@ export const bag = (state = null, action) => {
   }
 }
 
+// TODO: add a 'detailedList' to store detailed pokemon info
+// TODO: add a 'locationsList' to store pokemon locations
+
 export const reducers = combineReducers({
   pokemonList,
   bag

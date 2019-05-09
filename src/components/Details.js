@@ -49,12 +49,14 @@ class Details extends React.Component {
   render() {
     return (
       <div className="Details" style={{marginTop: "10em"}}>
-        <div className="container details-container">
+        <div className="container">
+          <div className="details-container">
           <div className="info-pane">
             {this.getInfoPane()}
           </div>
           <div className="content-pane">
             {this.getContentPane()}
+          </div>
           </div>
         </div>
       </div>
