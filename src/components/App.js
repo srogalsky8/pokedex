@@ -20,8 +20,11 @@ class App extends React.Component {
     props.setBag(persistedBag ? persistedBag : {});
   }
   render() {
+    console.log(process.env);
     return (
-        <Router>
+        <Router
+        basename="/pokedex"
+        >
           <div className="App">
             <Route exact path="/" component={Home} />
             <Route path="/pokemon/:name" component={Details} />
